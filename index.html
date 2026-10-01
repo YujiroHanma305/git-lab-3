@@ -1,18 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title> My First Story</title>
-        <style>
-            body { font-family: sans-serif; max-width: 600px; margin: 2em auto;}
-            p { font-family: comic; color: brown; width: 300px;}
-        </style>
-    </head>
-    <body>
-        <h1>Hello, World! DEMO!!!</h1>
-        <h2>MY FIRST GUTHIB PAGE</h2>
-        <p>This page is posted with help of GitHub Pages</p>
-        <p>I Am THe Bne Of My Sword</p> 
-        <footer>&copy;2067 My Project</footer>
-    </body>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlimited Blade Works</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b0b0e;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Фоновый эффект пламени и стали */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(139, 0, 0, 0.15) 0%, rgba(11, 11, 14, 0.95) 80%);
+            z-index: -1;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 700px;
+            padding: 40px;
+            background: rgba(18, 18, 24, 0.7);
+            border: 1px solid rgba(255, 68, 68, 0.2);
+            box-shadow: 0 0 40px rgba(139, 0, 0, 0.3);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            top: -1px; left: 10%; right: 10%; height: 2px;
+            background: linear-gradient(90deg, transparent, #ff4444, transparent);
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ff5555;
+            margin-bottom: 25px;
+            opacity: 0.8;
+        }
+
+        .chant {
+            font-size: 1.25rem;
+            line-height: 2;
+            font-style: italic;
+            color: #cfcfcf;
+            margin-bottom: 35px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chant p {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.8s ease, transform 0.8s ease, color 0.3s ease;
+            margin: 4px 0;
+        }
+
+        .chant p.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chant p.highlight {
+            color: #ff3333;
+            font-weight: bold;
+            text-shadow: 0 0 12px rgba(255, 51, 51, 0.6);
+        }
+
+        button {
+            background: transparent;
+            color: #ff4444;
+            border: 2px solid #ff4444;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.1);
+        }
+
+        button:hover {
+            background: #ff4444;
+            color: #0b0b0e;
+            box-shadow: 0 0 25px rgba(255, 68, 68, 0.6);
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Unlimited Blade Works</h1>
+        <div class="chant" id="chant-container">
+            <!-- Строки будут добавляться через JS -->
+        </div>
+        <button id="pray-btn" onclick="startChant()">So as I pray...</button>
+    </div>
+
+    <script>
+        const lines = [
+            "I am the bone of my sword.",
+            "Steel is my body, and fire is my blood.",
+            "I have created over a thousand blades.",
+            "Unknown to Death, Nor known to Life.",
+            "Have withstood pain to create many weapons...",
+            "Yet, those hands will never hold anything.",
+            "So as I pray, — UNLIMITED BLADE WORKS."
+        ];
+
+        const container = document.getElementById('chant-container');
+        const btn = document.getElementById('pray-btn');
+        let isChanting = false;
+
+        function startChant() {
+            if (isChanting) return;
+            isChanting = true;
+            container.innerHTML = '';
+            btn.style.display = 'none';
+
+            // Создаем элементы для каждой строки
+            lines.forEach((text, index) => {
+                const p = document.createElement('p');
+                p.textContent = text;
+                if (index === lines.length - 1) {
+                    p.classList.add('highlight');
+                }
+                container.appendChild(p);
+            });
+
+            const paragraphs = container.querySelectorAll('p');
+            
+            // Последовательно показываем строки
+            paragraphs.forEach((p, index) => {
+                setTimeout(() => {
+                    p.classList.add('visible');
+                    // Если это последняя строка, возвращаем кнопку через время
+                    if (index === paragraphs.length - 1) {
+                        setTimeout(() => {
+                            btn.style.display = 'inline-block';
+                            isChanting = false;
+                        }, 1500);
+                    }
+                }, index * 1100);
+            });
+        }
+
+        // Автоматический запуск при загрузке
+        window.onload = () => {
+            startChant();
+        };
+    </script>
+</body>
 </html>
